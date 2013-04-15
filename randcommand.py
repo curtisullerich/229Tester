@@ -11,7 +11,7 @@ files = os.listdir("test/input")
 i = 0
 for file in files:
   inp = "test/input/" + file + " "
-  outp = "test/output/" + inp
+  outp = "test/output/" + file
 
   random = Random()
 
