@@ -50,4 +50,4 @@ for file in files:
 
   command = exe + gen + a + tx + ty + wx + wy + inp + "> " + outp
   print command
-  #os.system(command)
+  os.system(command)
