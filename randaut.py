@@ -1,9 +1,16 @@
 #generates random .aut files
 from random import *
 import string
+import sys
 import os
 
 n = 100;
+
+if(len(sys.argv) == 1):
+    print "This requires one argument"
+    sys.exit(1)
+
+outDir = sys.argv[1]
 
 for i in range(n):
     random = Random()
@@ -23,7 +30,7 @@ for i in range(n):
         yLow = yHigh
         yHigh = tmp
 
-    f = open("test/input/test" + str(i) + ".aut", "w")
+    f = open(outDir + "test" + str(i) + ".aut", "w")
 
     f.write("Xrange " + str(xLow) + " " + str(xHigh) + ";\n")
     f.write("Yrange " + str(yLow) + " " + str(yHigh) + ";\n")
