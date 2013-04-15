@@ -9,12 +9,13 @@ commands are of the form
 ./showgen -g 0 -a -tx 0,3 -ty 2,3 -wx 4,5 -wy 6,7
 """
 
-if (len(sys.argv)!=3):
-  print "usage: python randcommand inputdir outputdir"
+if (len(sys.argv)!=4):
+  print "usage: python randcommand inputdir outputdir execdir"
   sys.exit(0)
 
 inputdir = sys.argv[1]
 outputdir = sys.argv[2]
+execdir = sys.argv[3]
 
 files = os.listdir(inputdir)
 i = 0
@@ -28,7 +29,7 @@ for file in files:
   random.seed(i)
   i+=1
 
-  exe = "./showgen "
+  exe = execdir + "/showgen "
   gen = ""
   a = ""
   tx = ""
