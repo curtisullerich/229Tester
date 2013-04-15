@@ -37,12 +37,16 @@ for i in range(n):
   wy = ""
 
   fname = "test" + str(i) + ".aut"
+  #assign to none now. If the odds are in their favor, they will be assigned
+  #values by the args below
   wxLow = None
   wxHigh = None
   wyLow = None
   wyHigh = None
   xLow = None
+  xHigh = None
   yLow = None
+  yHigh = None
   runToGen = 0
 
   if random.uniform(0,1) < 0.7:
@@ -80,26 +84,19 @@ for i in range(n):
   """ I DO WHAT I WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANT """
 
   autxLow = random.randint(-50,50)
-  autxHigh = random.randint(-50,50)
-  if(autxLow > autxHigh):
-    tmp = autxLow
-    autxLow = autxHigh
-    autxHigh = tmp
+  autxHigh = autxLow + random.randint(0,50)
 
   autyLow = random.randint(-50,50)
-  autyHigh = random.randint(-50,50)
-  if(autyLow > autyHigh):
-    tmp = autyLow
-    autyLow = autyHigh
-    autyHigh = tmp
+  autyHigh = autyLow + random.randint(0,50)
 
+  #see if they were give values by chance. If not, the values presented
+  #in the autx file remain the defaults, so assign them as such here
   if(xLow == None):
-      xLow = autxLow
-      xHigh = autxHigh
-
+    xLow = autxLow
+    xHigh = autxHigh
   if(yLow == None):
-      yLow = autyLow
-      yHigh = autyHigh
+    yLow = autyLow
+    yHigh = autyHigh
 
   f = open(testdir + "/generatedaut/" + fname, "w")
   f.write("Xrange " + str(autxLow) + " " + str(autxHigh) + ";\n")
@@ -122,43 +119,46 @@ for i in range(n):
 
   f.write("Initial {\n")
   firstX = True
-  yList = range(autyLow, autyHigh+1)
-  #random.shuffle(yList)
   oracleList = [ [0]*((xHigh-xLow)+1) for b in range(yHigh-yLow+1) ]
-  for y in yList:
-    xList = range(autxLow, autxHigh+1)
+  for y in range(autyLow, autyHigh+1):
     if(random.choice([True,False])):
       f.write("Y = " + str(y) + " : ")
-      #random.shuffle(xList)
-      for x in xList:
+      written = False
+      for x in range(autxLow, autxHigh+1):
         #also print input stuff for 308 program
         if(random.choice([True,False])):
-          if(yLow <= y and y <= yHigh and xLow <= x and x <= xHigh):
+          if(y >= yLow and y <= yHigh and x <= xLow and x <= xHigh):
             oracleList[y-yLow][x-xLow] = 1
           if (firstX):
+            written = True
             f.write(str(x))
             firstX = False
           else:
+            written = True
             f.write("," + str(x))
         else:
-          if(yLow <= y and y <= yHigh and xLow <= x and x <= xHigh):
+          #these are constricted ranges presented by the args. This
+          #output is used for 308-file calculations
+          if(y >= yLow and y <= yHigh and x >= xLow and x <= xHigh):
             oracleList[y-yLow][x-xLow] = 0
+      if (not written):
+        f.write(str(random.randint(autxLow, autxHigh)))
       f.write(";\n")
       firstX = True
     else:
-      for x in xList:
-        if(yLow <= y and y <= yHigh and xLow <= x and x <= xHigh):
+      for x in range(autxLow, autxHigh+1):
+        #these are constricted ranges presented by the args. This
+        #output is used for 308-file calculations
+        if(y <= yLow and y <= yHigh and x <= xLow and x <= xHigh):
           oracleList[y-yLow][x-xLow] = 0
   f.write("};\n")
 
   """ using command from above!"""
   if (wxLow is None):
     wxLow = xLow
-  if (wxHigh is None):
     wxHigh = xHigh
   if (wyLow is None):
     wyLow = yLow
-  if (wyHigh is None):
     wyHigh = yHigh
 
   print command
@@ -169,42 +169,65 @@ for i in range(n):
   #wxLow, wxHigh, wyLow, wyHigh
 
   #generate oracle
+  tmp = oracleList[:][:]
+  #for EVEN generations, oracleList is PREV
+  #for ODD generations, tmp is PREV
+  genNum = 0
   for genNum in range(0,runToGen):
-    tmp = oracleList[:][:]
-    for y in range(0,yHigh-yLow):
-      for x in range(0,xHigh-xLow):
+    #for y in range(0,yHigh-yLow):
+    for y in range(len(oracleList)): 
+      #for x in range(0,xHigh-xLow):
+      for x in range(len(oracleList[y])):
         liveNeighbors = 0
         i = y-1
         j = x-1
+        #convoluted way of counting the live neighbors
         while(i <= y+1):
           while(j <= j+1):
-            if(yLow <= i and i <= yHigh):
-              if(xLow <= j and j <= xHigh):
-                if(oracleList[i][j] == 1 and i != x and j != y):
-                  liveNeighbors += 1
-        if(oracleList[y][x] == 1):
-          if(liveNeighbors == 2 or liveNeighbors == 3):
-            tmp[y][x] = 1
-          else:
-            tmp[y][x] = 0
-        elif(oracleList[y][x] == 0):
-          if(liveNeighbors == 3):
-            tmp[y][x] = 1
-          else:
-            tmp[y][x] = 0
-    oracleList = tmp[:][:]
+            if(i >= yLow and i <= yHigh):
+              if(j >=  xLow and j <= xHigh):
+                if(i != x and j != y):
+                  if (genNum%2 == 0):
+                    liveNeighbors += oracleList[i][j]
+                  else:
+                    liveNeihbors += tmp[i][j]
+        #calculated the state for the next generation
 
+        preval = 0
+        nowval = 0
+        if (genNum%2 == 0):
+          preval = oracleList[y][x]
+        else:
+          preval = tmp[y][x]
+
+        if(preval == 1):
+          if(liveNeighbors == 2 or liveNeighbors == 3):
+            nowval = 1
+          else:
+            nowval = 0
+        elif(preval == 0):
+          if(liveNeighbors == 3):
+            nowval = 1
+          else:
+            nowval = 0
+        if (genNum%2 == 0):
+          tmp[y][x] = nowval
+        else:
+          oracleList[y][x]= nowval
+  if (genNum%2 == 0):
+    #now oracleList contains the current values either way
+    oracleList = tmp[:][:]
   #crop and diff
 
   #print "wyLow: " + str(wyLow)
-
 
   testF = open(testdir + "/showgenoutput/test" + str(i) + ".229")
   testPassed = True
   for y in range(wyLow-yLow, (wyLow-yLow)+(wyHigh-wyLow)+1):
     for x in range(wxLow-xLow, (wxLow-xLow)+(wxHigh-wxLow)+1):
       cell = testF.read(1)
-      
+
+      #cell is outside the terrain, so the index will be invalid
       if (y > yHigh or y < yLow or x > xHigh or x < xLow):
         if (cell != deadChar):
           testPassed = False
@@ -217,7 +240,7 @@ for i in range(n):
           testPassed = False
           print "Test " + str(i) + " failed at window index ("+str(x)+","+str(y)+")"
     returnStatement = testF.read(1)
-    if(returnStatement != '\n'):
+    if(returnStatement != '\n'):#TODO will this fail on windows machines (not that I care)?
       testPassed = False
       print "Test " + str(i) + " failed at y=" + str(y) + "with no return statement"
 
