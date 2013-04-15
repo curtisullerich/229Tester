@@ -140,7 +140,6 @@ for i in range(1):
         if(random.choice([True,False])):
           if(yLow <= y and y <= yHigh and xLow <= x and x <= xHigh):
               oracleList[y-yLow][x-xLow] = 1
-
           if (firstX):
             f.write(str(x))
             firstX = False
@@ -199,7 +198,6 @@ for i in range(1):
             oracleList[y][x] = 0
 
   #crop and diff
-
 
   testF = open("showgenoutput/test" + str(i) + ".229")
   testPassed = True
