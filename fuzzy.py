@@ -9,9 +9,7 @@ def mkdir_p(path):
       pass
     else: raise
 
-
 n = 3;
-
 if (len(sys.argv)!=3):
   print "usage: python fuzzy.py testdir execdir"
   sys.exit(0)
@@ -21,8 +19,6 @@ execdir = sys.argv[2]
 
 mkdir_p(testdir)
 mkdir_p(testdir+"/generatedaut")
-#mkdir_p(testdir+"/oracleinput")
-#mkdir_p(testdir+"/oracleoutput")
 mkdir_p(testdir+"/showgenoutput")
 
 for i in range(n):
@@ -128,8 +124,6 @@ for i in range(n):
   firstX = True
   yList = range(autyLow, autyHigh+1)
   #random.shuffle(yList)
-  #oracleList = [[]]
-  #oracleList = [[xHigh-xLow]*(yHigh-yLow)]
   oracleList = [ [0]*((xHigh-xLow)+1) for b in range(yHigh-yLow+1) ]
   for y in yList:
     xList = range(autxLow, autxHigh+1)
