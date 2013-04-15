@@ -26,7 +26,7 @@ mkdir_p(testdir+"/oracleoutput")
 mkdir_p(testdir+"/showgenoutput")
 
 
-for i in range(n):
+for i in range(1):
   random = Random()
   random.seed(i)
 
@@ -184,5 +184,33 @@ for i in range(n):
 
 
   #crop and diff
+  print "yo"
+  oracleF = open("oracleinput/test" + str(i) + ".308", "r")
+
+  oracleList = [[]]
+  for y in range(0, yHigh+1-yLow):
+    for x in range(0, xHigh+1-xLow):
+        oracleList[y][x] = oracleF.read(1)
+    newline = oracleF.read(1)
+  oracleF.close()
+
+  testF = open("showgenoutput/test" + str(i) + ".229")
+  testPassed = True
+  for y in range(wyLow-yLow, (wyLow-yLow)+(wyHigh-wyLow)+1):
+    for x in range(wxLow-xLow, (wxLow-xLow)+(wxHigh-wxLow)+1):
+      cell = testF.read(1)
+      if((cell != liveChar and oracleList[y][x] == '1')):
+        testPassed = False
+        print "Test " + str(i) + " failed at window index ("+str(x)+","+str(y)+")"
+      elif((cell != deadChar and oracleList[y][x] == '0')):
+        testPassed = False
+        print "Test " + str(i) + " failed at window index ("+str(x)+","+str(y)+")"
+    returnStatement = testF.read(1)
+    if(returnStatement != '\n'):
+      testPassed = False
+      print "Test " + str(i) + " failed at y=" + str(y) + "with no return statement"
+
+  if(testPassed):
+      print "Test " + str(i) + " passed!"
     
 
