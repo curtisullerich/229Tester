@@ -23,7 +23,7 @@ for i in range(n):
         yLow = yHigh
         yHigh = tmp
 
-    f = open("input/test" + str(i) + ".aut", "w")
+    f = open("test/input/test" + str(i) + ".aut", "w")
 
     f.write("Xrange " + str(xLow) + " " + str(xHigh) + ";\n")
     f.write("Yrange " + str(yLow) + " " + str(yHigh) + ";\n")
