@@ -5,13 +5,13 @@ generate a random command for each input file in "input"
 and send the output to a corresponding filename in "output"
 
 commands are of the form
-../showgen -g 0 -a -tx 0,3 -ty 2,3 -wx 4,5 -wy 6,7
+./showgen -g 0 -a -tx 0,3 -ty 2,3 -wx 4,5 -wy 6,7
 """
-files = os.listdir("input")
+files = os.listdir("test/input")
 i = 0
 for file in files:
-  inp = file + " "
-  outp = "output/" + inp
+  inp = "test/input/" + file + " "
+  outp = "test/output/" + inp
 
   random = Random()
 
