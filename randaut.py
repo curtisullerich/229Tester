@@ -3,7 +3,7 @@ from random import *
 import string
 import os
 
-n = 10;
+n = 100;
 
 for i in range(n):
     random = Random()
