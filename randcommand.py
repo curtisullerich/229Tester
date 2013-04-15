@@ -1,5 +1,6 @@
 from random import *
 import os
+import sys
 """
 generate a random command for each input file in "input"
 and send the output to a corresponding filename in "output"
@@ -7,11 +8,19 @@ and send the output to a corresponding filename in "output"
 commands are of the form
 ./showgen -g 0 -a -tx 0,3 -ty 2,3 -wx 4,5 -wy 6,7
 """
-files = os.listdir("test/input")
+
+if (len(sys.argv)!=3):
+  print "usage: python randcommand inputdir outputdir"
+  sys.exit(0)
+
+inputdir = sys.argv[1]
+outputdir = sys.argv[2]
+
+files = os.listdir(inputdir)
 i = 0
 for file in files:
-  inp = "test/input/" + file + " "
-  outp = "test/output/" + file
+  inp = inputdir + "/" + file + " "
+  outp = outputdir + "/" + file
 
   random = Random()
 
@@ -48,6 +57,12 @@ for file in files:
     high = low + random.randint(0,50)
     wy = "-wy " + str(low) + "," + str(high) + " "
 
-  command = exe + gen + a + tx + ty + wx + wy + inp + "> " + outp
+
+  command = exe + gen + a + tx + ty + wx + wy 
+  if (random.choice([True,False])):
+    command += inp + "> " + outp
+  else:
+    command += " < " + inp + " > " + outp
+
   print command
-  os.system(command)
+  #os.system(command)
