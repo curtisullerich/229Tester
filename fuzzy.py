@@ -45,10 +45,8 @@ for i in range(n):
     yHigh = tmp
 
   fname = "test" + str(i) + ".aut"
-  f2name = "test" + str(i) + ".308"
 
   f = open(testdir + "/generatedaut/" + fname, "w")
-  f2 = open(testdir + "/oracleinput/" + f2name, "w")
   f.write("Xrange " + str(xLow) + " " + str(xHigh) + ";\n")
   f.write("Yrange " + str(yLow) + " " + str(yHigh) + ";\n")
 
@@ -71,6 +69,7 @@ for i in range(n):
   firstX = True
   yList = range(yLow, yHigh+1)
   #random.shuffle(yList)
+  oracleList = [[]]
   for y in yList:
     xList = range(xLow, xHigh+1)
     if(random.choice([True,False])):
@@ -79,21 +78,19 @@ for i in range(n):
       for x in xList:
         #also print input stuff for 308 program
         if(random.choice([True,False])):
-          f2.write("1")
+          oracleList[y-yLow][x-xLow] = 1
           if (firstX):
             f.write(str(x))
             firstX = False
           else:
             f.write("," + str(x))
         else:
-          f2.write("0")          
-      f2.write("\n")
+          oracleList[y-yLow][x-xLow] = 0
       f.write(";\n")
       firstX = True
     else:
       for x in xList:
-        f2.write("0")
-      f2.write("\n")
+        oracleList[y-yLow][x-xLow] = 0
   f.write("};\n")
 
   """
@@ -156,7 +153,34 @@ for i in range(n):
   #wxLow, wxHigh, wyLow, wyHigh
 
   #run 308 program with its matching input
-  os.system("./orc " + testdir + "/oracleinput/test" + str(i) + ".308 > " + testdir + "/oracleoutput/test" + str(i) + ".308")
+  #os.system("./orc " + testdir + "/oracleinput/test" + str(i) + ".308 > " + testdir + "/oracleoutput/test" + str(i) + ".308")
+  for genNum in range(0,runToGen):
+      for y in range(0,yHigh-yLow):
+          for x in range(0,xHigh-xLow):
+              liveNeighbors = 0
+              int i = y-1
+              int j = x-1
+              while(i <= y+1):
+                  while(j <= j+1):
+                      if(yLow <= i && i <= yHigh):
+                          if(xLow <= j && j <= xHigh):
+                              if(oracleList[i][j] == 1 && i != x && j != y):
+                                  liveNeighbors++
+              if(oracleList[y][x] == 1):
+                  if(liveNeighbors == 2 || liveNeighbors == 3):
+                      oracleList[y][x] = 1
+                  else:
+                      oracleList[y][x] = 0
+              elif(oracleList[y][x] == 0):
+                  if(liveNeighbors == 3):
+                      oracleList[y][x] = 1
+                  else:
+                      oracleList[y][x] = 0
+
+
+
+              
+
 
 
   #crop and diff
