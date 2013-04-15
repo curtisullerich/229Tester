@@ -65,4 +65,4 @@ for file in files:
     command += " < " + inp + " > " + outp
 
   print command
-  #os.system(command)
+  os.system(command)
