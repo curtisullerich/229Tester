@@ -159,7 +159,7 @@ for counter in range(0,n):
     wyLow = yLow
     wyHigh = yHigh
 
-  print command
+  print "\n" + command
   os.system(command)
 
   #we know ranges here
@@ -250,4 +250,6 @@ for counter in range(0,n):
     print "Test " + str(counter) + " passed!"
   else:
     print "Test " + str(counter) + " failed."
+
+  print "######################################################################"
 
