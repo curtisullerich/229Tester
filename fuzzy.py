@@ -175,6 +175,7 @@ for i in range(1):
 
   #generate oracle
   for genNum in range(0,runToGen):
+    tmp = oracleList[:][:]
     for y in range(0,yHigh-yLow):
       for x in range(0,xHigh-xLow):
         liveNeighbors = 0
@@ -188,14 +189,15 @@ for i in range(1):
                   liveNeighbors += 1
         if(oracleList[y][x] == 1):
           if(liveNeighbors == 2 or liveNeighbors == 3):
-            oracleList[y][x] = 1
+            tmp[y][x] = 1
           else:
-            oracleList[y][x] = 0
+            tmp[y][x] = 0
         elif(oracleList[y][x] == 0):
           if(liveNeighbors == 3):
-            oracleList[y][x] = 1
+            tmp[y][x] = 1
           else:
-            oracleList[y][x] = 0
+            tmp[y][x] = 0
+    oracleList = tmp[:][:]
 
   #crop and diff
 
