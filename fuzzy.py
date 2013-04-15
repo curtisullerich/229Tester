@@ -1,15 +1,14 @@
-#generates random .aut files
 from random import *
 import string, sys, os, errno
 def mkdir_p(path):
   try:
     os.makedirs(path)
-  except OSError as exc: # Python >2.5
+  except OSError as exc:
     if exc.errno == errno.EEXIST and os.path.isdir(path):
       pass
     else: raise
 
-n = 10;
+n = 100;
 if (len(sys.argv)!=3):
   print "usage: python fuzzy.py testdir execdir"
   sys.exit(0)
@@ -21,7 +20,7 @@ mkdir_p(testdir)
 mkdir_p(testdir+"/generatedaut")
 mkdir_p(testdir+"/showgenoutput")
 
-for counter in range(n):
+for counter in range(0,n):
   random = Random()
   random.seed(counter)
   """
@@ -79,9 +78,6 @@ for counter in range(n):
   if a != "":
     command += " | " + exe 
   command += " > " + testdir + "/showgenoutput/test" + str(counter) + ".229"
-
-
-  """ I DO WHAT I WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANT """
 
   autxLow = random.randint(-50,50)
   autxHigh = autxLow + random.randint(0,50)
@@ -186,9 +182,12 @@ for counter in range(n):
         #convoluted way of counting the live neighbors
         while(i <= y+1):
           while(j <= x+1):
-            if(i >= yLow and i <= yHigh):
-              if(j >= xLow and j <= xHigh):
-                if(i != y and j != x):
+            #TODO this needs to check the terrain/display bounds, ADJUSTED for list index offset
+            if(i >= yLow and i <= yHigh and j >= xLow and j <= xHigh):
+              if(i != y and j != x):
+                if (i >= 0 and i < len(oracleList) and j >= 0 and j < len(oracleList[0])):
+                  #TODO check the indexing math here to make sure it's alright. I think it's fine,
+                  #but checking against xLow and co just above here makes me uneasy
                   if (genNum%2 == 0):
                     liveNeighbors += oracleList[i][j]
                   else:
@@ -222,8 +221,6 @@ for counter in range(n):
     #now oracleList contains the current values either way
     oracleList = tmp[:][:]
   #crop and diff
-
-  #print "wyLow: " + str(wyLow)
 
   testF = open(testdir + "/showgenoutput/test" + str(counter) + ".229")
   testPassed = True
