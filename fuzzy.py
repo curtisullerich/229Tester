@@ -9,7 +9,7 @@ def mkdir_p(path):
       pass
     else: raise
 
-n = 3;
+n = 10;
 if (len(sys.argv)!=3):
   print "usage: python fuzzy.py testdir execdir"
   sys.exit(0)
@@ -21,9 +21,9 @@ mkdir_p(testdir)
 mkdir_p(testdir+"/generatedaut")
 mkdir_p(testdir+"/showgenoutput")
 
-for i in range(n):
+for counter in range(n):
   random = Random()
-  random.seed(i)
+  random.seed(counter)
   """
   commands are of the form
   ./showgen -g 0 -a -tx 0,3 -ty 2,3 -wx 4,5 -wy 6,7
@@ -36,7 +36,7 @@ for i in range(n):
   wx = ""
   wy = ""
 
-  fname = "test" + str(i) + ".aut"
+  fname = "test" + str(counter) + ".aut"
   #assign to none now. If the odds are in their favor, they will be assigned
   #values by the args below
   wxLow = None
@@ -78,7 +78,7 @@ for i in range(n):
 
   if a != "":
     command += " | " + exe 
-  command += " > " + testdir + "/showgenoutput/test" + str(i) + ".229"
+  command += " > " + testdir + "/showgenoutput/test" + str(counter) + ".229"
 
 
   """ I DO WHAT I WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANT """
@@ -152,7 +152,9 @@ for i in range(n):
         if(y <= yLow and y <= yHigh and x <= xLow and x <= xHigh):
           oracleList[y-yLow][x-xLow] = 0
   f.write("};\n")
-
+  f.flush()
+  os.fsync(f.fileno())
+  f.close()
   """ using command from above!"""
   if (wxLow is None):
     wxLow = xLow
@@ -183,14 +185,16 @@ for i in range(n):
         j = x-1
         #convoluted way of counting the live neighbors
         while(i <= y+1):
-          while(j <= j+1):
+          while(j <= x+1):
             if(i >= yLow and i <= yHigh):
-              if(j >=  xLow and j <= xHigh):
-                if(i != x and j != y):
+              if(j >= xLow and j <= xHigh):
+                if(i != y and j != x):
                   if (genNum%2 == 0):
                     liveNeighbors += oracleList[i][j]
                   else:
-                    liveNeihbors += tmp[i][j]
+                    liveNeighbors += tmp[i][j]
+            j+=1
+          i+=1
         #calculated the state for the next generation
 
         preval = 0
@@ -221,7 +225,7 @@ for i in range(n):
 
   #print "wyLow: " + str(wyLow)
 
-  testF = open(testdir + "/showgenoutput/test" + str(i) + ".229")
+  testF = open(testdir + "/showgenoutput/test" + str(counter) + ".229")
   testPassed = True
   for y in range(wyLow-yLow, (wyLow-yLow)+(wyHigh-wyLow)+1):
     for x in range(wxLow-xLow, (wxLow-xLow)+(wxHigh-wxLow)+1):
@@ -231,20 +235,22 @@ for i in range(n):
       if (y > yHigh or y < yLow or x > xHigh or x < xLow):
         if (cell != deadChar):
           testPassed = False
-          print "Test " + str(i) + " failed at window index ("+str(x)+","+str(y)+")"
+          #print "Test " + str(counter) + " failed at window index ("+str(x)+","+str(y)+")"
       else:
         if((cell != liveChar and oracleList[y][x] == '1')):
           testPassed = False
-          print "Test " + str(i) + " failed at window index ("+str(x)+","+str(y)+")"
+          #print "Test " + str(counter) + " failed at window index ("+str(x)+","+str(y)+")"
         elif((cell != deadChar and oracleList[y][x] == '0')):
           testPassed = False
-          print "Test " + str(i) + " failed at window index ("+str(x)+","+str(y)+")"
+          #print "Test " + str(counter) + " failed at window index ("+str(x)+","+str(y)+")"
     returnStatement = testF.read(1)
     if(returnStatement != '\n'):#TODO will this fail on windows machines (not that I care)?
       testPassed = False
-      print "Test " + str(i) + " failed at y=" + str(y) + "with no return statement"
-
+      #print "Test " + str(counter) + " failed at y=" + str(y) + "with no return statement"
+  testF.flush()
+  testF.close()
   if(testPassed):
-      print "Test " + str(i) + " passed!"
-    
+    print "Test " + str(counter) + " passed!"
+  else:
+    print "Test " + str(counter) + " failed."
 
