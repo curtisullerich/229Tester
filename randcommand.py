@@ -19,7 +19,7 @@ for file in files:
   random.seed(i)
   i+=1
 
-  exe = "../showgen "
+  exe = "./showgen "
   gen = ""
   a = ""
   tx = ""
