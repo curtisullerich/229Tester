@@ -29,6 +29,58 @@ mkdir_p(testdir+"/showgenoutput")
 for i in range(1):
   random = Random()
   random.seed(i)
+  """
+  commands are of the form
+  ./showgen -g 0 -a -tx 0,3 -ty 2,3 -wx 4,5 -wy 6,7
+  """
+  exe = execdir + "/showgen "
+  gen = ""
+  a = ""
+  tx = ""
+  ty = ""
+  wx = ""
+  wy = ""
+
+  fname = "test" + str(i) + ".aut"
+  wxLow = None
+  wxHigh = None
+  wyLow = None
+  wyHigh = None
+  runToGen = 0
+
+  if random.uniform(0,1) < 0.7:
+    runToGen = random.randint(0,1000)
+    gen = "-g " + str(runToGen) + " "
+  if random.choice([True, False]):
+    a = "-a "
+  if random.choice([True, False]):
+    xLow = random.randint(-50,50)
+    xHigh = xLow + random.randint(0,50)
+    tx = "-tx " + str(xLow) + "," + str(xHigh) + " "
+  if random.choice([True, False]):
+    yLow = random.randint(-50,50)
+    yHigh = yLow + random.randint(0,50)
+    ty = "-ty " + str(yLow) + "," + str(yHigh) + " "
+  if random.choice([True, False]):
+    wxLow = random.randint(-50,50)
+    wxHigh = wxLow + random.randint(0,50)
+    wx = "-wx " + str(wxLow) + "," + str(wxHigh) + " "
+  if random.choice([True, False]):
+    wyLow = random.randint(-50,50)
+    wyHigh = wyLow + random.randint(0,50)
+    wy = "-wy " + str(wyLow) + "," + str(wyHigh) + " "
+
+  command = exe + gen + a + tx + ty + wx + wy 
+  if (random.choice([True,False])):
+    command += " < " #to read as stdin instead of file
+  command += testdir + "/generatedaut/" + fname
+
+  if a != "":
+    command += " | " + exe 
+  command += " > " + testdir + "/showgenoutput/test" + str(i) + ".229"
+
+
+  """ I DO WHAT I WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANT """
 
   xLow = random.randint(-50,50)
   xHigh = random.randint(-50,50)
@@ -44,7 +96,6 @@ for i in range(1):
     yLow = yHigh
     yHigh = tmp
 
-  fname = "test" + str(i) + ".aut"
 
   f = open(testdir + "/generatedaut/" + fname, "w")
   f.write("Xrange " + str(xLow) + " " + str(xHigh) + ";\n")
@@ -54,10 +105,10 @@ for i in range(1):
 
   rd = random.randint(0,255)
   gd = random.randint(0,255)
-  bd = random.randint(0,255) 
-  ra = random.randint(0,255) 
-  ga = random.randint(0,255) 
-  ba = random.randint(0,255) 
+  bd = random.randint(0,255)
+  ra = random.randint(0,255)
+  ga = random.randint(0,255)
+  ba = random.randint(0,255)
 
   chars = string.ascii_uppercase + string.ascii_lowercase + string.digits
   liveChar = random.choice(chars)
@@ -93,57 +144,15 @@ for i in range(1):
         oracleList[y-yLow][x-xLow] = 0
   f.write("};\n")
 
-  """
-  generate a random command for each input file in "input"
-  and send the output to a corresponding filename in "output"
-
-  commands are of the form
-  ./showgen -g 0 -a -tx 0,3 -ty 2,3 -wx 4,5 -wy 6,7
-  """
-  exe = execdir + "/showgen "
-  gen = ""
-  a = ""
-  tx = ""
-  ty = ""
-  wx = ""
-  wy = ""
-
-  wxLow = xLow
-  wxHigh = xHigh
-  wyLow = yLow
-  wyHigh = yHigh
-  runToGen = 0
-
-  if random.uniform(0,1) < 0.7:
-    runToGen = random.randint(0,1000)
-    gen = "-g " + str(runToGen) + " "
-  if random.choice([True, False]):
-    a = "-a "
-  if random.choice([True, False]):
-    xLow = random.randint(-50,50)
-    xHigh = xLow + random.randint(0,50)
-    tx = "-tx " + str(xLow) + "," + str(xHigh) + " "
-  if random.choice([True, False]):
-    yLow = random.randint(-50,50)
-    yHigh = yLow + random.randint(0,50)
-    ty = "-ty " + str(yLow) + "," + str(yHigh) + " "
-  if random.choice([True, False]):
-    wxLow = random.randint(-50,50)
-    wxHigh = wxLow + random.randint(0,50)
-    wx = "-wx " + str(wxLow) + "," + str(wxHigh) + " "
-  if random.choice([True, False]):
-    wyLow = random.randint(-50,50)
-    wyHigh = wyLow + random.randint(0,50)
-    wy = "-wy " + str(wyLow) + "," + str(wyHigh) + " "
-
-  command = exe + gen + a + tx + ty + wx + wy 
-  if (random.choice([True,False])):
-    command += " < " #to read as stdin instead of file
-  command += testdir + "/generatedaut/" + fname
-
-  if a != "":
-    command += " | " + exe 
-  command += " > " + testdir + "/showgenoutput/test" + str(i) + ".229"
+  """ using command from above!"""
+  if (wxLow is None):
+    wxLow = xLow
+  if (wxHigh is None):
+    wxHigh = xHigh
+  if (wyLow is None):
+    wyLow = yLow
+  if (wyHigh is None):
+    wyHigh = yHigh
 
   print command
   os.system(command)
@@ -155,33 +164,27 @@ for i in range(1):
   #run 308 program with its matching input
   #os.system("./orc " + testdir + "/oracleinput/test" + str(i) + ".308 > " + testdir + "/oracleoutput/test" + str(i) + ".308")
   for genNum in range(0,runToGen):
-      for y in range(0,yHigh-yLow):
-          for x in range(0,xHigh-xLow):
-              liveNeighbors = 0
-              int i = y-1
-              int j = x-1
-              while(i <= y+1):
-                  while(j <= j+1):
-                      if(yLow <= i && i <= yHigh):
-                          if(xLow <= j && j <= xHigh):
-                              if(oracleList[i][j] == 1 && i != x && j != y):
-                                  liveNeighbors++
-              if(oracleList[y][x] == 1):
-                  if(liveNeighbors == 2 || liveNeighbors == 3):
-                      oracleList[y][x] = 1
-                  else:
-                      oracleList[y][x] = 0
-              elif(oracleList[y][x] == 0):
-                  if(liveNeighbors == 3):
-                      oracleList[y][x] = 1
-                  else:
-                      oracleList[y][x] = 0
-
-
-
-              
-
-
+    for y in range(0,yHigh-yLow):
+      for x in range(0,xHigh-xLow):
+        liveNeighbors = 0
+        i = y-1
+        j = x-1
+        while(i <= y+1):
+          while(j <= j+1):
+            if(yLow <= i and i <= yHigh):
+              if(xLow <= j and j <= xHigh):
+                if(oracleList[i][j] == 1 and i != x and j != y):
+                  liveNeighbors += 1
+        if(oracleList[y][x] == 1):
+          if(liveNeighbors == 2 or liveNeighbors == 3):
+            oracleList[y][x] = 1
+          else:
+            oracleList[y][x] = 0
+        elif(oracleList[y][x] == 0):
+          if(liveNeighbors == 3):
+            oracleList[y][x] = 1
+          else:
+            oracleList[y][x] = 0
 
   #crop and diff
   print "yo"
@@ -190,7 +193,7 @@ for i in range(1):
   oracleList = [[]]
   for y in range(0, yHigh+1-yLow):
     for x in range(0, xHigh+1-xLow):
-        oracleList[y][x] = oracleF.read(1)
+      oracleList[y][x] = oracleF.read(1)
     newline = oracleF.read(1)
   oracleF.close()
 
