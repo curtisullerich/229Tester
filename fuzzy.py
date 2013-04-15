@@ -10,7 +10,7 @@ def mkdir_p(path):
     else: raise
 
 
-n = 100;
+n = 3;
 
 if (len(sys.argv)!=3):
   print "usage: python fuzzy.py testdir execdir"
@@ -21,12 +21,11 @@ execdir = sys.argv[2]
 
 mkdir_p(testdir)
 mkdir_p(testdir+"/generatedaut")
-mkdir_p(testdir+"/oracleinput")
-mkdir_p(testdir+"/oracleoutput")
+#mkdir_p(testdir+"/oracleinput")
+#mkdir_p(testdir+"/oracleoutput")
 mkdir_p(testdir+"/showgenoutput")
 
-
-for i in range(1):
+for i in range(n):
   random = Random()
   random.seed(i)
   """
@@ -129,7 +128,9 @@ for i in range(1):
   firstX = True
   yList = range(autyLow, autyHigh+1)
   #random.shuffle(yList)
-  oracleList = [[]]
+  #oracleList = [[]]
+  #oracleList = [[xHigh-xLow]*(yHigh-yLow)]
+  oracleList = [ [0]*((xHigh-xLow)+1) for b in range(yHigh-yLow+1) ]
   for y in yList:
     xList = range(autxLow, autxHigh+1)
     if(random.choice([True,False])):
@@ -139,7 +140,7 @@ for i in range(1):
         #also print input stuff for 308 program
         if(random.choice([True,False])):
           if(yLow <= y and y <= yHigh and xLow <= x and x <= xHigh):
-              oracleList[y-yLow][x-xLow] = 1
+            oracleList[y-yLow][x-xLow] = 1
           if (firstX):
             f.write(str(x))
             firstX = False
@@ -147,13 +148,13 @@ for i in range(1):
             f.write("," + str(x))
         else:
           if(yLow <= y and y <= yHigh and xLow <= x and x <= xHigh):
-              oracleList[y-yLow][x-xLow] = 0
+            oracleList[y-yLow][x-xLow] = 0
       f.write(";\n")
       firstX = True
     else:
       for x in xList:
-          if(yLow <= y and y <= yHigh and xLow <= x and x <= xHigh):
-              oracleList[y-yLow][x-xLow] = 0
+        if(yLow <= y and y <= yHigh and xLow <= x and x <= xHigh):
+          oracleList[y-yLow][x-xLow] = 0
   f.write("};\n")
 
   """ using command from above!"""
@@ -201,17 +202,26 @@ for i in range(1):
 
   #crop and diff
 
-  testF = open("showgenoutput/test" + str(i) + ".229")
+  #print "wyLow: " + str(wyLow)
+
+
+  testF = open(testdir + "/showgenoutput/test" + str(i) + ".229")
   testPassed = True
   for y in range(wyLow-yLow, (wyLow-yLow)+(wyHigh-wyLow)+1):
     for x in range(wxLow-xLow, (wxLow-xLow)+(wxHigh-wxLow)+1):
       cell = testF.read(1)
-      if((cell != liveChar and oracleList[y][x] == '1')):
-        testPassed = False
-        print "Test " + str(i) + " failed at window index ("+str(x)+","+str(y)+")"
-      elif((cell != deadChar and oracleList[y][x] == '0')):
-        testPassed = False
-        print "Test " + str(i) + " failed at window index ("+str(x)+","+str(y)+")"
+      
+      if (y > yHigh or y < yLow or x > xHigh or x < xLow):
+        if (cell != deadChar):
+          testPassed = False
+          print "Test " + str(i) + " failed at window index ("+str(x)+","+str(y)+")"
+      else:
+        if((cell != liveChar and oracleList[y][x] == '1')):
+          testPassed = False
+          print "Test " + str(i) + " failed at window index ("+str(x)+","+str(y)+")"
+        elif((cell != deadChar and oracleList[y][x] == '0')):
+          testPassed = False
+          print "Test " + str(i) + " failed at window index ("+str(x)+","+str(y)+")"
     returnStatement = testF.read(1)
     if(returnStatement != '\n'):
       testPassed = False
