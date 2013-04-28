@@ -1,9 +1,8 @@
-Xrange -5 a;#malformed
+Xrange -5 5;
 Yrange -5 5;
-Name "malformed statement 1";
+Name "malformed statement 12";
 Rules ConwaysLife;
-Colors (34, 216, 195), (65, 126, 115);
-Initial {
+Init ial {#malformed
 State 1;
 Y = -5 : -5,-3,-2,0,2,3,5;
 Y = -4 : -5,-3,-2,1,2,3,4,5;
