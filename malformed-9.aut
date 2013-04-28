@@ -1,7 +1,7 @@
-Xrange -5 a;#malformed
+Xrange -5 5;
 Yrange -5 5;
-Name "malformed statement 1";
-Rules ConwaysLife;
+Name "malformed statement 8";
+Rules NOPENOPENOPENOPENOPE;#malformed
 Colors (34, 216, 195), (65, 126, 115);
 Initial {
 State 1;

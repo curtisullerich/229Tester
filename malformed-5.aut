@@ -1,6 +1,6 @@
-Xrange -5 a;#malformed
+Xrange -5 5;
 Yrange -5 5;
-Name "malformed statement 1";
+Name PISS "malformed statement 5";#malformed
 Rules ConwaysLife;
 Colors (34, 216, 195), (65, 126, 115);
 Initial {
