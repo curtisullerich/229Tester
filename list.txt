@@ -1,0 +1,19 @@
+reorder all keywords
+comments
+comments in initial
+random whitespace
+directory
+nonexistent file
+name with ;
+name with #
+missing keywords
+with chars/colors
+without chars/colors
+wrong number of chars/colors
+with/without ConwaysLife
+with State 1;
+states out of order
+malformed statements for all keywords
+values in initial outside of ranges
+multiple statements per line
+no extra whitespace
