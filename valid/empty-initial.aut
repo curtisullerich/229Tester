@@ -1,0 +1,6 @@
+Xrange -5 5;
+Yrange -5 5;
+Name "malformed statement 1";
+Rules ConwaysLife;
+Colors (34, 216, 195), (65, 126, 115);
+Initial {};
