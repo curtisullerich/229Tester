@@ -2,7 +2,7 @@ Xrange -5 5;
 Yrange -5 5;
 Name "malformed statement 14";
 Rules ConwaysLife;
-Initial {
+Initial 
 Y = -5 : -5,-3,-2,0,2,3,5;
 Y = -4 : -5,-3,-2,1,2,3,4,5;
 Y = -3 : -5,-4,-3,-2,-1,0,1,2;

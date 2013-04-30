@@ -2,7 +2,7 @@ Xrange -5 5;
 Yrange -5 5;
 Name "malformed statement 11";
 Rules ConwaysLife;
-Coldrohyrjs e(y3, ,4.,; i2y b1 l6,r v1 n9ut d5vb) ,k,u e   m(e sc6v 55 s,b u e v1b j2t d6  y,e c m t1d  b1y 5 ) ;#malformed
+Colors e(y3, ,4.,; i2y b1 l6,r v1 n9ut d5vb) ,k,u e   m(e sc6v 55 s,b u e v1b j2t d6  y,e c m t1d  b1y 5 ) ;#malformed
 Initial {
 State 1;
 Y = -5 : -5,-3,-2,0,2,3,5;
