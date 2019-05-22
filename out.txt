@@ -1,0 +1,113 @@
+malformed/colorsM.aut
+Expected token of type Comma. Found ";" instead.
+-------------------------------------------------------
+malformed/comments2.aut
+Expected token of type Int. Found "Yrange" instead.
+-------------------------------------------------------
+malformed/comments3.aut
+Expected token of type Comma. Found "Xrange" instead.
+-------------------------------------------------------
+malformed/empty.txt
+File empty.
+-------------------------------------------------------
+malformed/malformed-10.aut
+Unsupported rule type ';'.
+-------------------------------------------------------
+malformed/malformed-11.aut
+Expected token of type OpenParen. Found "e" instead.
+-------------------------------------------------------
+malformed/malformed-12.aut
+Bogus keyword "Init" found with statement "{ State 1 ; "
+Invalid state found for token with value "Y"!
+-------------------------------------------------------
+malformed/malformed-13.aut
+Expected token of type OpenBrace. Found ";" instead.
+-------------------------------------------------------
+malformed/malformed-14.aut
+Expected token of type OpenBrace. Found "Y" instead.
+-------------------------------------------------------
+malformed/malformed-15.aut
+Expected token of type Y. Found "X" instead.
+-------------------------------------------------------
+malformed/malformed-16.aut
+Expected token of type Colon. Found "5" instead.
+-------------------------------------------------------
+malformed/malformed-17.aut
+Expected token of type Int. Found "=" instead.
+-------------------------------------------------------
+malformed/malformed-19.aut
+Expected token of type Int. Found "5asdfadsfadfasdfasdf" instead.
+-------------------------------------------------------
+malformed/malformed-1.aut
+Expected token of type Int. Found "a" instead.
+-------------------------------------------------------
+malformed/malformed-20.aut
+Expected token of type Y. Found ";" instead.
+-------------------------------------------------------
+malformed/malformed-22.aut
+Expected token of type Y. Found "ÿ" instead.
+-------------------------------------------------------
+malformed/malformed-23.aut
+Expected token of type Y. Found "{" instead.
+-------------------------------------------------------
+malformed/malformed-24.aut
+Expected token of type Colon. Found "ÿ" instead.
+-------------------------------------------------------
+malformed/malformed-25.aut
+Expected token of type Y. Found "ÿ" instead.
+-------------------------------------------------------
+malformed/malformed-2.aut
+Expected token of type Int. Found ";" instead.
+-------------------------------------------------------
+malformed/malformed-3.aut
+Expected token of type Int. Found "-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5" instead.
+-------------------------------------------------------
+malformed/malformed-4.aut
+Expected token of type Semicolon. Found "4" instead.
+-------------------------------------------------------
+malformed/malformed-5.aut
+Expected token of type Quote. Found "PISS" instead.
+-------------------------------------------------------
+malformed/malformed-6.aut
+Expected token of type Quote. Found ";" instead.
+-------------------------------------------------------
+malformed/malformed-8.aut
+Expected token of type Semicolon. Found "HATES" instead.
+-------------------------------------------------------
+malformed/malformed-9.aut
+Unsupported rule type 'NOPENOPENOPENOPENOPE'.
+-------------------------------------------------------
+malformed/missingKeyword.aut
+Reached Initial statement without valid preceeding Xrange or Yrange designator.
+-------------------------------------------------------
+malformed/moreStates.aut
+Found more colors than states needed.
+-------------------------------------------------------
+malformed/nonclosed-quote.aut
+Name string was unclosed.
+-------------------------------------------------------
+malformed/reorder2.aut
+1~~~1~~111~
+111~~~1111~
+1~~~~11~~1~
+1~~~11~~1~~
+1~~~11~~~~~
+1~~11~~~111
+1~~~~~11~11
+1~~11~~~1~~
+11111111~~~
+1~11~~11111
+1~11~1~11~1
+-------------------------------------------------------
+malformed/reordered.txt
+Reached Initial statement without valid preceeding Xrange or Yrange designator.
+-------------------------------------------------------
+malformed/state1.aut
+Reached Initial statement without valid preceeding Xrange or Yrange designator.
+-------------------------------------------------------
+malformed/statesOutOrder.aut
+Expected token of type Semicolon. Found ":" instead.
+-------------------------------------------------------
+malformed/withConways.aut
+Expected token of type Semicolon. Found "Colors" instead.
+-------------------------------------------------------
